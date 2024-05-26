@@ -1,0 +1,39 @@
+.main-content{
+    position: relative;
+    width: 500px;
+    height: 80vh;
+    /* background-color: #385170; */
+    background-color: #fff;
+    margin-top: 10px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    overflow: auto;
+}
+.addbtn{
+    font-size: 18px;
+    position: absolute;
+    right: 10px;
+    bottom: 30px;
+    background-color:#385170 ;
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    cursor: pointer;
+    border: 1px solid black;
+
+}
+.review-card{
+    width: 100%;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border: 1px solid black;
+
+}
+.star{
+    font-size: 18px !important;
+}
+
+@media (min-width: 280px) and (max-width: 479px){
+    .main-content{
+        width: 280px;
+        height: 80vh;
+
+    }
+}

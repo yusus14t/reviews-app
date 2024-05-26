@@ -1,95 +1,97 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client"
+import React, { useState, useEffect } from 'react';
+import "./page.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar, faThumbsDown, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import ReviewFormModal from '@/components/ReviewFormModal';
 
-export default function Home() {
+const Page = () => {
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    // Initial reviews
+    const initialReviews = [
+      {
+        safetyRating: 5,
+        communication: 4,
+        review: 'Great experience with this service!',
+        recommend: 'yes',
+      },
+      {
+        safetyRating: 3,
+        communication: 5,
+        review: 'Could improve safety measures.',
+        recommend: 'no',
+      },
+    ];
+    setReviews(initialReviews);
+  }, []);
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
+  const handleSubmitReview = (review) => {
+    setReviews([review, ...reviews]);
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
+    <div className='d-flex flex-column justify-content-center align-items-center'>
+     
+      <ReviewFormModal
+        show={showModal}
+        handleClose={handleCloseModal}
+        handleSubmit={handleSubmitReview}
+      />
+      <h2 className='mb-1 mt-3 text-light'>Reviews</h2>
+      <div className='main-content p-2'>
+        <ul className='list-unstyled'>
+          {reviews.map((review, index) => (
+            <li key={index}>
+              <div className='review-card p-3 bg-light rounded my-2'>
+                <div className='mb-2 p-2 border rounded'>
+                  <label>Safety</label>
+                  <div>
+                    {[...Array(review.safetyRating)].map((_, i) => (
+                      <FontAwesomeIcon key={i} className='fs-5' icon={faStar} />
+                    ))}
+                  </div>
+                </div>
+                <div className='mb-2 p-2 border rounded'>
+                  <label>Communication</label>
+                  <div>
+                    {[...Array(review.communication)].map((_, i) => (
+                      <FontAwesomeIcon key={i} className='fs-5' icon={faStar} />
+                    ))}
+                  </div>
+                </div>
+                <div className='mb-2 p-2 border rounded'>
+                  <label>Review</label>
+                  <p className='mb-0'>"{review.review}"</p>
+                </div>
+                <div className='p-2 border rounded'>
+                  <label>Recommend</label>
+                  <div>
+                      {review.recommend === 'yes' ? (
+                        <FontAwesomeIcon className='fs-3 text-success' icon={faThumbsUp} />
+                      ) : (
+                        <FontAwesomeIcon className='fs-3 text-danger' icon={faThumbsDown} />
+                      )}
+                      {/* No text */}
+                    </div>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      <span className='addbtn bg-secondary px-1 px-2 text-light' onClick={handleShowModal}>
+        Add Review
+      </span>
+    </div>
   );
-}
+};
+
+export default Page;
